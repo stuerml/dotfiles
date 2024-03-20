@@ -1,0 +1,144 @@
+configuration {
+    show-icons:                     true;
+    display-drun: 		            "";
+    drun-display-format:            "{icon} {name}";
+    disable-history:                false;
+    click-to-exit: 		            true;
+    location:                       0;
+}
+
+@import "font.rasi"
+@import "colors.rasi"
+
+window {
+    transparency:                   "real";
+    background-color:               @bg-col;
+    text-color:                     @fg-col;
+    border:                         1px;
+    border-radius:                  4px;
+    width:                          500px;
+    anchor:                         center;
+    x-offset:                       0;
+    y-offset:                       0;
+}
+
+prompt {
+    enabled: 			            true;
+    padding: 			            8px;
+    background-color: 		        @bg-col;
+    text-color: 		            @fg-col;
+}
+
+textbox-prompt-colon {
+    expand: 			            false;
+    str: 			                "";
+    border-radius:                  100%;
+    background-color:               @bg-col;
+    text-color:                     @fg-col;
+    padding:                        8px 12px 8px 12px;
+}
+
+entry {
+    background-color:               @bg-col;
+    text-color:                     @fg-col;
+    placeholder-color:              @fg-col;
+    expand:                         true;
+    horizontal-align:               0;
+    placeholder:                    "Search...";
+    blink:                          true;
+    border:                  	    0px 0px 0px 0px;
+    border-color:                   @bg-col;
+    border-radius:                  0px;
+    padding:                        8px;
+}
+
+inputbar {
+	children: 		                [ textbox-prompt-colon, prompt, entry ];
+    background-color:               @bg-col;
+    text-color:                     @fg-col;
+    expand:                         false;
+    border:                  	    2px 2px 2px 2px;
+    border-radius:                  4px;
+    border-color:                   @primary;
+    margin:                         8px 8px 8px 8px;
+    padding:                        0px;
+    position:                       center;
+}
+
+case-indicator {
+    background-color:               @bg-col;
+    text-color:                     @fg-col;
+    spacing:                        0;
+}
+
+
+listview {
+    background-color:               @bg-col;
+    columns:                        1;
+    lines:			                7;
+    spacing:                        4px;
+    cycle:                          false;
+    dynamic:                        true;
+    layout:                         vertical;
+}
+
+mainbox {
+    background-color:               @bg-col;
+    children:                       [ inputbar, listview ];
+    spacing:                        15px;
+    padding:                        15px;
+}
+
+element {
+    background-color:               @bg-col;
+    text-color:                     @fg-col;
+    orientation:                    horizontal;
+    padding:                        6px 6px 6px 6px;
+}
+
+element-icon {
+    background-color: 	            inherit;
+    text-color:       		        inherit;
+    horizontal-align:               0.5;
+    vertical-align:                 0.5;
+    size:                           24px;
+    border:                         0px;
+}
+
+element-text {
+    background-color: 		        inherit;
+    text-color:       		        inherit;
+    expand:                         true;
+    horizontal-align:               0;
+    vertical-align:                 0.5;
+    margin:                         2px 0px 2px 2px;
+}
+
+element normal.urgent,
+element alternate.urgent {
+    background-color:               @bg-col;
+    text-color:                     @fg-col2;
+}
+
+element normal.active,
+element alternate.active {
+    background-color:               @bg-col;
+    text-color:                     @fg-col;
+}
+
+element selected {
+    background-color:               @bg-col;
+    text-color:                     @primary;
+    border:                  	    0px 0px 2px 0px;
+    border-color:                   @primary;
+}
+
+element selected.urgent {
+    background-color:               @bg-col;
+    text-color:                     @fg-col2;
+}
+
+element selected.active {
+    background-color:               @bg-col;
+    color:                          @fg-col2;
+}

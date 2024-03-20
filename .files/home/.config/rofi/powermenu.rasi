@@ -1,0 +1,75 @@
+configuration {
+    show-icons:                     true;
+    display-drun: 		            ">_";
+    drun-display-format:            "{icon}";
+    disable-history:                false;
+    click-to-exit: 		            true;
+    location:                       0;
+}
+
+@import "font.rasi"
+@import "colors.rasi"
+
+window {
+    transparency:                   "real";
+    background-color:               @bg-col;
+    text-color:                     @fg-col;
+    border:                  	    2px;
+    border-color:                   @bg-col;
+    border-radius:                  4px;
+    width:                          500px;
+    x-offset:                       0;
+    y-offset:                       0;
+}
+
+listview {
+    background-color:               @bg-col;
+    columns:                        5;
+    lines:			                1;
+    spacing:                        15px;
+    cycle:                          true;
+    dynamic:                        true;
+    flow:                           horizontal;
+}
+
+mainbox {
+    background-color:               @bg-col;
+    children:                       [ listview ];
+    spacing:                        15px;
+    padding:                        15px;
+}
+
+element {
+    background-color:               @bg-col;
+    text-color:                     @fg-col;
+    orientation:                    horizontal;
+    border-radius:                  4px;
+    padding:                        25px;
+}
+
+element-icon {
+    background-color: 		        inherit;
+    text-color:       		        inherit;
+    horizontal-align:               1;
+    vertical-align:                 0.5;
+    size:                           0px;
+    border:                         0px;
+}
+
+element-text {
+    background-color: 		        inherit;
+    text-color:       		        inherit;
+    font:			                "CaskaydiaCove Nerd Font Mono 25";
+    expand:                         true;
+    horizontal-align:               0.5;
+    vertical-align:                 0.5;
+    margin:                         0px 0px 0px 0px;
+}
+
+element selected {
+    background-color:               @bg-col;
+    text-color:                     @primary;
+    border:                  	    2px 2px 2px 2px;
+    border-radius:                  4px;
+    border-color:                   @primary;
+}
