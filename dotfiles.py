@@ -12,6 +12,7 @@ import typer
 
 import os
 
+from enum import Enum
 from typing import Dict, List
 
 from pathlib import Path
@@ -26,9 +27,12 @@ PACKAGES: List[str] = [
     ]
 
 PIP_DEPENDENCIES: List[str] = ["qtile"]
-
-
 '''end packages '''
+
+PROFILE_PATH = "~/.local/share/profile"
+class Profile(str, Enum):
+    work = "work"
+    home = "home"
 
 ''' utilities '''
 def create_dir_if_not_exists(dest: Path):
@@ -97,14 +101,26 @@ def install_files():
             print("You may run the program again with the correct permissions")
             continue
 
+def write_profile(profile: Profile):
+    profile_path = os.path.expanduser(PROFILE_PATH)
+    print(f"{profile_path}")
+    with open(profile_path, 'w+') as f:
+        f.write(profile)
+        f.close()
+
+
 @dotfiles.command()
 def install(pkgs: bool = typer.Option(default=False, help="Installs packages for dotfiles."),
-            files: bool = typer.Option(default=False, help="Installs configuration files.")) -> None:
+            files: bool = typer.Option(default=False, help="Installs configuration files."),
+            profile: Profile = typer.Option(default=Profile.home, help="Creates a file containing the profile string")) -> None:
     if pkgs:
         install_packages()
     
     if files:
         install_files()
+
+    # Always update the profile
+    write_profile(profile)
 
 if __name__ == "__main__":
     dotfiles()

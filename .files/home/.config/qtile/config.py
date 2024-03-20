@@ -24,9 +24,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from typing import List
 from libqtile import bar, hook, layout, qtile
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Click, Drag, DropDown, Group, Key, Match, Screen, ScratchPad
 from libqtile.lazy import lazy
+from libqtile.log_utils import logger
 
 from qtile_extras.widget.decorations import RectDecoration, BorderDecoration
 from qtile_extras import widget
@@ -35,15 +37,23 @@ import subprocess
 import os
 
 from themes import CatppuccinMocha
+from user_profile import check_profile
 
 mod = "mod4"
-terminal = "alacritty"
 launcher = "rofi_launcher"
 powermenu = "rofi_powermenu"
-browser = "brave"
-browser_launch = "brave --app"
-font = "Caskaydia Cove Nerd Font"
-wallpaper = "/home/mike/.local/share/wallpapers/wallpaper.jpg"
+
+if check_profile() == "work":
+    terminal = "kitty"
+    browser = "chrome"
+    browser_launch = "chrome --app"
+else:
+    terminal = "alacritty"
+    browser = "brave"
+    browser_launch = "brave --app"
+
+font = "CaskaydiaCove Nerd Font"
+wallpaper = os.path.expanduser("~/.local/share/wallpapers/wallpaper.jpg")
 
 theme = {
     "background": CatppuccinMocha["crust"],
@@ -62,7 +72,7 @@ keys = [
     Key([mod], "right", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "down", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "up", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
+    Key([mod], "Tab", lazy.layout.next(), desc="Move window focus to other window"),
     Key([mod, "shift"], "left", lazy.layout.shuffle_left(), desc="Move window to the left"),
     Key([mod, "shift"], "right", lazy.layout.shuffle_right(), desc="Move window to the right"),
     Key([mod, "shift"], "down", lazy.layout.shuffle_down(), desc="Move window down"),
@@ -79,7 +89,7 @@ keys = [
         desc="Toggle between split and unsplit sides of stack",
     ),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
-    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([mod, "control"], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key(
         [mod],
@@ -106,6 +116,38 @@ for vt in range(1, 8):
         )
     )
 
+dropdown_config = {
+    "y": 0.008,
+    "width": 0.8,
+    "height": 0.6,
+    "on_focus_lost_hide": True,
+    "warp_pointer": True,
+}
+
+scratchpad = ScratchPad("scratch", dropdowns=[
+    DropDown(
+        "terminal",
+        terminal,
+        **dropdown_config),
+    DropDown(
+        "htop",
+        terminal + " htop",
+        **dropdown_config),
+    DropDown(
+        "cal",
+        terminal + " calcure",
+        **dropdown_config),
+    ],
+    single=True,
+)
+
+keys.extend(
+    [
+        Key([mod], "space", lazy.group["scratch"].dropdown_toggle("terminal")),
+        Key([mod, "control"], "space", lazy.group["scratch"].dropdown_toggle("htop")),
+        Key([mod, "mod1"], "space", lazy.group["scratch"].dropdown_toggle("cal")),
+    ]
+)
 
 groups = [Group(i) for i in "123456789"]
 
@@ -126,6 +168,8 @@ for i in groups:
             ),
         ]
     )
+
+groups.append(scratchpad)
 
 layout_defaults = {
     "border_width": 2,
@@ -166,6 +210,10 @@ def border(color: str, size=2):
             )
         ]
     }
+
+def open_calendar():
+    qtile.groups_map["scratch"].dropdowns["cal"].toggle()
+    
 
 def get_bar_widgets():
     return [
@@ -243,7 +291,7 @@ def get_bar_widgets():
         widget.Spacer(length=8),
         widget.Clock(
             format="󰔛  %I:%M",
-            mouse_callbacks = {'Button1': lambda: qtile.spawn(browser_launch + "=https://time.is")},
+            mouse_callbacks = {"Button1": lambda: open_calendar()},
             foreground = theme["secondary"],
             **border(theme["secondary"])
         ),
@@ -351,11 +399,20 @@ wmname = "LG3D"
     
 @hook.subscribe.startup_once
 def autostart():
-    processes = [
-        # ["picom", "--experimental-backend", "-b"]
-        ["picom", "-b"]
-    ]
+    profile = check_profile()
+
+    processes: List[List[str]] = []
+    if profile == "home":
+        processes = [
+            ["picom", "-b"],
+            ["setxkbmap", "de"]
+        ]
+    elif profile == "work":
+        processes = [
+            ["picom", "--experimental-backends", "-b"],
+            ["setxkbmap", "de"]
+        ]
 
     for p in processes:
         subprocess.Popen(p)
-    
+
