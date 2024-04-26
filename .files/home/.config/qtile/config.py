@@ -47,21 +47,22 @@ if check_profile() == "work":
     terminal = "kitty"
     browser = "chrome"
     browser_launch = "chrome --app"
+    wallpaper = os.path.expanduser("~/.local/share/wallpapers/wallpaper2.jpg")
 else:
     terminal = "alacritty"
     browser = "brave"
     browser_launch = "brave --app"
+    wallpaper = os.path.expanduser("~/.local/share/wallpapers/wallpaper.jpg")
 
 font = "CaskaydiaCove Nerd Font"
-wallpaper = os.path.expanduser("~/.local/share/wallpapers/wallpaper.jpg")
 
 theme = {
     "background": CatppuccinMocha["crust"],
     "background2": CatppuccinMocha["surface0"],
     "foreground": CatppuccinMocha["text"],
     "foreground2": CatppuccinMocha["subtext0"],
-    "primary": CatppuccinMocha["teal"],
-    "secondary": CatppuccinMocha["mauve"],
+    "primary": CatppuccinMocha["blue"],
+    "secondary": CatppuccinMocha["green"],
 }
 
 keys = [
@@ -335,7 +336,7 @@ dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
 bring_front_click = False
 floats_kept_above = True
-cursor_warp = False
+cursor_warp = True
 
 floating_defaults = {
     "border_focus": theme["secondary"],
@@ -344,7 +345,7 @@ floating_defaults = {
     "max_border_width": 0,
     "fullscreen_border_width": 0,
 }
-    
+
 
 floating_layout = layout.Floating(
     float_rules=[
@@ -410,9 +411,9 @@ def autostart():
     elif profile == "work":
         processes = [
             ["picom", "--experimental-backends", "-b"],
-            ["setxkbmap", "de"]
+            ["setxkbmap", "de"],
+            ["/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1", "&"]
         ]
 
     for p in processes:
         subprocess.Popen(p)
-
