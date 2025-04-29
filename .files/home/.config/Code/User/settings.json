@@ -1,0 +1,53 @@
+{
+  // editor configuration
+  "editor.mouseWheelZoom": true,
+  "editor.renderControlCharacters": true,
+  "editor.unicodeHighlight.nonBasicASCII": false,
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "editor.renderWhitespace": "all",
+  "editor.fontFamily": "CaskaydiaCove NF",
+  "editor.inlayHints.enabled": "offUnlessPressed",
+  "editor.minimap.enabled": false,
+  "editor.lineNumbers": "relative",
+
+  // workbench configuration
+  "workbench.startupEditor": "newUntitledFile",
+  "workbench.editor.editorActionsLocation": "titleBar",
+  "workbench.iconTheme": "catppuccin-mocha",
+  "workbench.sideBar.location": "right",
+  "workbench.layoutControl.enabled": false,
+  "workbench.navigationControl.enabled": false,
+  "workbench.activityBar.location": "top",
+  "workbench.colorTheme": "Catppuccin Mocha",
+
+  // window configuraitons
+  "window.menuBarVisibility": "compact",
+  "window.enableMenuBarMnemonics": false,
+  "window.density.editorTabHeight": "default",
+
+  "chat.commandCenter.enabled": false,
+  
+  // git plugin configuration
+  "git.openRepositoryInParentFolders": "never",
+
+  // cmake plugin configuration 
+  "cmake.options.statusBarVisibility": "compact",
+  "cmake.allowCommentsInPresetsFile": true,
+  "cmake.useCMakePresets": "auto",
+  "cmake.allowUnsupportedPresetsVersions": true,
+  "cmake.pinnedCommands": [
+    "workbench.action.tasks.configureTaskRunner",
+    "workbench.action.tasks.runTask"
+  ],
+
+  "catppuccin.accentColor": "teal",
+  "catppuccin.extraBordersEnabled": true,
+  "catppuccin.workbenchMode": "flat",
+  
+  "terminal.integrated.fontFamily": "CaskaydiaCove NF",
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.customGlyphs": true,
+  
+  "C_Cpp.experimentalFeatures": "enabled"
+}
